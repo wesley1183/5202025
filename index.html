@@ -1,33 +1,54 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>给我最爱的人</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>给我最爱的人听</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: url('IMG_7637.jpeg') no-repeat center center fixed;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-image: url('background.jpg'); /* Make sure you name your image file this */
       background-size: cover;
-      font-family: "Arial", sans-serif;
-      color: black;
+      background-position: center;
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      backdrop-filter: brightness(0.6);
     }
+
+    .container {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+      max-width: 90%;
+    }
+
     h1 {
-      margin-top: 40vh;
-      font-size: 24px;
-      text-shadow: 2px 2px 4px #000;
+      font-size: 22px;
+      margin-bottom: 20px;
+      line-height: 1.5;
     }
+
     audio {
-      margin-top: 20px;
+      width: 100%;
+      max-width: 300px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>我没有早点遇见你，但我会陪你到最后。</h1>
-  <audio controls>
-    <source src="voice.mp3" type="audio/mpeg">
-    你的浏览器不支持音频播放。
-  </audio>
+  <div class="container">
+    <h1>我没有早点遇见你，但我会陪你到最后。</h1>
+    <audio controls>
+      <source src="给我最爱的人听.mp3" type="audio/mpeg">
+      你的浏览器不支持音频播放。
+    </audio>
+  </div>
 </body>
 </html>
