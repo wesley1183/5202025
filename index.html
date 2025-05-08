@@ -25,7 +25,7 @@
     .container {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      padding: 30px 25px;
+      padding: 50px 25px 30px; /* increased top padding here */
       backdrop-filter: blur(15px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       max-width: 90%;
@@ -44,7 +44,7 @@
     audio {
       width: 100%;
       outline: none;
-      margin-top: 40px;
+      margin-top: 0;
     }
 
     ::-webkit-media-controls-panel {
@@ -53,7 +53,7 @@
 
     @media screen and (max-width: 500px) {
       .container {
-        padding: 25px 20px;
+        padding: 40px 20px 25px;
       }
 
       .message {
