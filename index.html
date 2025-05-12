@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>给我最爱的人听</title>
   <style>
     * {
@@ -13,58 +13,63 @@
 
     html, body {
       height: 100%;
+      font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
       background: url('IMG_7637.jpeg') no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
-      color: #f7c6d4;
       display: flex;
       justify-content: center;
       align-items: center;
+      color: #f7c6d4;
     }
 
     .container {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      padding: 40px 25px 30px;
+      padding: 30px 25px;
       backdrop-filter: blur(15px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       max-width: 90%;
       width: 400px;
       text-align: center;
-      transform: translateY(20px); /* Slightly lowered */
+      margin-top: 40px; /* shifts audio and content slightly lower */
     }
 
     .message {
       font-size: 1.3em;
       margin-bottom: 20px;
       line-height: 1.5;
-      font-weight: 600;
       color: #f9d1db;
+      font-weight: 600;
     }
 
     audio {
       width: 100%;
       outline: none;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .subtitles {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 10px;
+      color: #fff;
       font-size: 0.95em;
-      color: #ffe0ec;
-      margin-top: 10px;
+      white-space: pre-wrap;
+      line-height: 1.4;
     }
 
+    /* Hidden clickable area on Doraemon's nose */
     .hidden-button {
       position: absolute;
-      top: 45%;
+      top: 49%;
       left: 50%;
       width: 40px;
       height: 40px;
       transform: translate(-50%, -50%);
-      background: transparent;
+      background-color: transparent;
       border: none;
       cursor: pointer;
-      z-index: 2;
+      z-index: 10;
     }
 
     .hidden-button:focus {
@@ -73,23 +78,32 @@
 
     @media screen and (max-width: 500px) {
       .container {
-        padding: 30px 20px;
+        padding: 25px 20px;
       }
+
       .message {
         font-size: 1.1em;
+      }
+
+      .subtitles {
+        font-size: 0.9em;
       }
     }
   </style>
 </head>
 <body>
-  <button class="hidden-button" onclick="location.href='page2.html'" aria-label="Secret Link"></button>
+  <button class="hidden-button" onclick="window.location.href='page2.html'"></button>
+
   <div class="container">
     <div class="message">我没有早点遇见你，但我会陪你到最后。</div>
     <audio controls>
-      <source src="Voice1.mp3" type="audio/mpeg">
-      <track src="subtitles1.vtt" kind="subtitles" srclang="zh-CN" label="中文" default>
+      <source src="Voice1.mp3" type="audio/mpeg" />
+      <track src="subtitles1.vtt" kind="subtitles" srclang="zh" label="中文" default>
       您的浏览器不支持音频播放。
     </audio>
+    <div class="subtitles" id="subtitleBox">
+      <!-- Fallback text or custom styling if needed -->
+    </div>
   </div>
 </body>
 </html>
