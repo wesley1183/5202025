@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>我还有话想对你说</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: url('71BEDD07-3A44-45BE-8946-C0F43E519B52.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
+      color: #f7c6d4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      max-width: 90%;
+      width: 400px;
+      text-align: center;
+    }
+
+    .message {
+      font-size: 1.3em;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      font-weight: 600;
+      color: #f9d1db;
+    }
+
+    audio {
+      width: 100%;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .subtitles {
+      font-size: 0.95em;
+      color: #ffe0ec;
+      margin-top: 10px;
+    }
+
+    @media screen and (max-width: 500px) {
+      .container {
+        padding: 25px 20px;
+      }
+      .message {
+        font-size: 1.1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="message">我还有话想对你说。</div>
+    <audio controls>
+      <source src="voice2.mp3" type="audio/mpeg">
+      <track src="subtitles2.vtt" kind="subtitles" srclang="zh-CN" label="中文" default>
+      您的浏览器不支持音频播放。
+    </audio>
+  </div>
+</body>
+</html>
