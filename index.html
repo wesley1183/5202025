@@ -18,8 +18,9 @@
       background-size: cover;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       color: #f7c6d4;
+      position: relative;
     }
 
     .container {
@@ -31,7 +32,7 @@
       max-width: 90%;
       width: 400px;
       text-align: center;
-      margin-top: 40px; /* shifts audio and content slightly lower */
+      margin-top: 120px;
     }
 
     .message {
@@ -45,23 +46,16 @@
     audio {
       width: 100%;
       outline: none;
-      margin-bottom: 15px;
+      margin-top: 10px;
     }
 
-    .subtitles {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      padding: 10px;
-      color: #fff;
-      font-size: 0.95em;
-      white-space: pre-wrap;
-      line-height: 1.4;
+    ::-webkit-media-controls-panel {
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* Hidden clickable area on Doraemon's nose */
     .hidden-button {
       position: absolute;
-      top: 49%;
+      top: 35.5%;
       left: 50%;
       width: 40px;
       height: 40px;
@@ -69,11 +63,16 @@
       background-color: transparent;
       border: none;
       cursor: pointer;
-      z-index: 10;
+      z-index: 9999;
     }
 
-    .hidden-button:focus {
-      outline: none;
+    .subtitles {
+      margin-top: 20px;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #fbd1dc;
+      white-space: pre-wrap;
+      text-align: left;
     }
 
     @media screen and (max-width: 500px) {
@@ -84,26 +83,21 @@
       .message {
         font-size: 1.1em;
       }
-
-      .subtitles {
-        font-size: 0.9em;
-      }
     }
   </style>
 </head>
 <body>
-  <button class="hidden-button" onclick="window.location.href='page2.html'"></button>
+
+  <button class="hidden-button" onclick="location.href='page2.html'"></button>
 
   <div class="container">
     <div class="message">我没有早点遇见你，但我会陪你到最后。</div>
     <audio controls>
-      <source src="Voice1.mp3" type="audio/mpeg" />
-      <track src="subtitles1.vtt" kind="subtitles" srclang="zh" label="中文" default>
+      <source src="Voice1.mp3" type="audio/mpeg">
+      <track src="subtitles.vtt" kind="subtitles" srclang="zh" label="中文" default>
       您的浏览器不支持音频播放。
     </audio>
-    <div class="subtitles" id="subtitleBox">
-      <!-- Fallback text or custom styling if needed -->
-    </div>
   </div>
+
 </body>
 </html>
