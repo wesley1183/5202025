@@ -32,26 +32,22 @@
       max-width: 90%;
       width: 400px;
       text-align: center;
-      margin-top: 315px; /* shifted lower */
+      margin-top: 315px;
     }
 
-.message {
-  font-size: 1.3em;
-  margin-top: 20px;         /* NEW: pushes title downward */
-  margin-bottom: 20px;
-  line-height: 1.5;
-  color: #ff69b4;
-  font-weight: 600;
-}
+    .message {
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      color: #ff69b4;
+      font-weight: 600;
+    }
 
     audio {
       width: 100%;
       outline: none;
       margin-top: 10px;
-    }
-
-    ::-webkit-media-controls-panel {
-      background-color: rgba(255, 255, 255, 0.2);
     }
 
     .hidden-button {
@@ -71,9 +67,10 @@
       margin-top: 20px;
       font-size: 0.95em;
       line-height: 1.6;
-      color: #fbd1dc;
+      color: #ff69b4;
       white-space: pre-wrap;
       text-align: left;
+      font-weight: 600;
     }
 
     @media screen and (max-width: 500px) {
@@ -88,20 +85,50 @@
   </style>
 </head>
 <body>
-
   <button class="hidden-button" onclick="location.href='page2.html'"></button>
 
   <div class="container">
     <div class="message">我没有早点遇见你，但我会陪你到最后。</div>
-    <audio controls>
+    <audio id="audio1" controls>
       <source src="Voice1.mp3" type="audio/mpeg">
-      <track src="subtitles1.vtt" kind="subtitles" srclang="zh" label="中文" default>
-      您的浏览器不支持音频播放。
     </audio>
-    <div class="subtitles">
-      <!-- Subtitles will be shown here if needed for fallback -->
-    </div>
+    <div class="subtitles" id="subtitle1"></div>
   </div>
 
+  <script>
+    const audio = document.getElementById('audio1');
+    const subtitleDisplay = document.getElementById('subtitle1');
+    const subtitles = [];
+
+    fetch('subtitles1.vtt')
+      .then(response => response.text())
+      .then(data => {
+        const lines = data.split('\n');
+        let current = {};
+        for (let line of lines) {
+          if (line.includes('-->')) {
+            const [start, end] = line.split('-->').map(s => s.trim());
+            current = { start: toSeconds(start), end: toSeconds(end), text: '' };
+          } else if (line.trim() === '') {
+            if (current.text) subtitles.push(current);
+            current = {};
+          } else {
+            current.text += line + '\n';
+          }
+        }
+      });
+
+    audio.addEventListener('timeupdate', () => {
+      const time = audio.currentTime;
+      const currentSubtitle = subtitles.find(sub => time >= sub.start && time <= sub.end);
+      subtitleDisplay.textContent = currentSubtitle ? currentSubtitle.text.trim() : '';
+    });
+
+    function toSeconds(timeString) {
+      const [h, m, s] = timeString.split(':');
+      const [sec, ms] = s.split('.');
+      return parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(sec) + (parseInt(ms) || 0) / 1000;
+    }
+  </script>
 </body>
 </html>
