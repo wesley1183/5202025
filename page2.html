@@ -32,7 +32,7 @@
       max-width: 90%;
       width: 400px;
       text-align: center;
-      margin-top: 60px; /* Shifts container lower */
+      margin-top: 60px;
     }
 
     .message {
@@ -51,8 +51,11 @@
 
     .subtitles {
       font-size: 0.95em;
-      color: #ffe0ec;
+      color: #ff69b4;
       margin-top: 10px;
+      white-space: pre-wrap;
+      text-align: left;
+      font-weight: 600;
     }
 
     @media screen and (max-width: 500px) {
@@ -68,11 +71,46 @@
 <body>
   <div class="container">
     <div class="message">我还有话想对你说。</div>
-    <audio controls>
+    <audio id="audio2" controls>
       <source src="Voice2.mp3" type="audio/mpeg">
-      <track src="subtitles2.vtt" kind="subtitles" srclang="zh-CN" label="中文" default>
-      您的浏览器不支持音频播放。
     </audio>
+    <div class="subtitles" id="subtitle2"></div>
   </div>
+
+  <script>
+    const audio2 = document.getElementById('audio2');
+    const subtitleDisplay2 = document.getElementById('subtitle2');
+    const subtitles2 = [];
+
+    fetch('subtitles2.vtt')
+      .then(response => response.text())
+      .then(data => {
+        const lines = data.split('\n');
+        let current = {};
+        for (let line of lines) {
+          if (line.includes('-->')) {
+            const [start, end] = line.split('-->').map(s => s.trim());
+            current = { start: toSeconds(start), end: toSeconds(end), text: '' };
+          } else if (line.trim() === '') {
+            if (current.text) subtitles2.push(current);
+            current = {};
+          } else {
+            current.text += line + '\n';
+          }
+        }
+      });
+
+    audio2.addEventListener('timeupdate', () => {
+      const time = audio2.currentTime;
+      const currentSubtitle = subtitles2.find(sub => time >= sub.start && time <= sub.end);
+      subtitleDisplay2.textContent = currentSubtitle ? currentSubtitle.text.trim() : '';
+    });
+
+    function toSeconds(timeString) {
+      const [h, m, s] = timeString.split(':');
+      const [sec, ms] = s.split('.');
+      return parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(sec) + (parseInt(ms) || 0) / 1000;
+    }
+  </script>
 </body>
 </html>
