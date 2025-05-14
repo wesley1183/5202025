@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>给我最爱的人听</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>我还有些话想对你说</title>
   <style>
     * {
       margin: 0;
@@ -14,92 +14,106 @@
     html, body {
       height: 100%;
       font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
-      background: url('IMG_7637.jpeg') no-repeat center center fixed;
-      background-size: 150%;
+      background: url('IMG_7637.jpeg') no-repeat center top fixed;
+      background-size: 130%;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      color: #eda9b6;
-      position: relative;
+      align-items: center;
+      color: #ff69b4;
+      flex-direction: column;
     }
 
     .container {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      padding: 30px 25px 70px 25px; /* extended bottom padding */
+      padding: 25px 20px 30px 20px;
       backdrop-filter: blur(15px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       max-width: 90%;
       width: 400px;
       text-align: center;
-      margin-top: 330px; /* lowered slightly for better positioning */
     }
 
     .message {
       font-size: 1.3em;
-      margin-top: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       line-height: 1.5;
-      color: #ff69b4;
       font-weight: 600;
+      color: #eda9b6;
+    }
+
+    .subtitles {
+      font-size: 0.95em;
+      color: #e8a9bb;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      text-align: center;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      min-height: 1.2em;
     }
 
     audio {
       width: 100%;
       outline: none;
-      margin-top: 10px;
     }
 
+    /* Invisible button on Doraemon's red nose */
     .hidden-button {
       position: absolute;
-      top: 38%; /* slightly lower to match nose */
+      top: 36%;
       left: 50%;
       width: 40px;
       height: 40px;
       transform: translate(-50%, -50%);
-      background-color: transparent;
+      background: none;
       border: none;
       cursor: pointer;
-      z-index: 9999;
-      border-radius: 50%; /* perfectly round */
-    }
-
-    .subtitles {
-      margin-top: 20px;
-      font-size: 0.95em;
-      line-height: 1.6;
-      color: #ff69b4;
-      white-space: pre-wrap;
-      text-align: left;
-      font-weight: 600;
+      z-index: 10;
     }
 
     @media screen and (max-width: 500px) {
       .container {
-        padding: 25px 20px 60px 20px;
+        padding: 20px 15px 25px 15px;
       }
 
       .message {
         font-size: 1.1em;
       }
+
+      .subtitles {
+        font-size: 0.9em;
+      }
+
+      .hidden-button {
+        top: 34%; /* Adjust slightly for mobile if needed */
+        width: 35px;
+        height: 35px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Invisible button for secret page -->
   <button class="hidden-button" onclick="location.href='page2.html'"></button>
 
   <div class="container">
-    <div class="message">我没有早点遇见你，但我会陪你到最后。</div>
+    <div class="message">我还有些话想对你说</div>
+    <div class="subtitles" id="subtitle1"></div>
     <audio id="audio1" controls>
       <source src="Voice1.mp3" type="audio/mpeg">
     </audio>
-    <div class="subtitles" id="subtitle1"></div>
   </div>
 
   <script>
-    const audio = document.getElementById('audio1');
-    const subtitleDisplay = document.getElementById('subtitle1');
-    const subtitles = [];
+    const audio1 = document.getElementById('audio1');
+    const subtitleDisplay1 = document.getElementById('subtitle1');
+    const subtitles1 = [];
 
     fetch('subtitles1.vtt')
       .then(response => response.text())
@@ -111,7 +125,7 @@
             const [start, end] = line.split('-->').map(s => s.trim());
             current = { start: toSeconds(start), end: toSeconds(end), text: '' };
           } else if (line.trim() === '') {
-            if (current.text) subtitles.push(current);
+            if (current.text) subtitles1.push(current);
             current = {};
           } else {
             current.text += line + '\n';
@@ -119,10 +133,22 @@
         }
       });
 
-    audio.addEventListener('timeupdate', () => {
-      const time = audio.currentTime;
-      const currentSubtitle = subtitles.find(sub => time >= sub.start && time <= sub.end);
-      subtitleDisplay.textContent = currentSubtitle ? currentSubtitle.text.trim() : '';
+    let lastText = '';
+
+    audio1.addEventListener('timeupdate', () => {
+      const time = audio1.currentTime;
+      const currentSubtitle = subtitles1.find(sub => time >= sub.start && time <= sub.end);
+      if (currentSubtitle && currentSubtitle.text.trim() !== lastText) {
+        subtitleDisplay1.style.opacity = 0;
+        setTimeout(() => {
+          subtitleDisplay1.textContent = currentSubtitle.text.trim();
+          subtitleDisplay1.style.opacity = 1;
+          lastText = currentSubtitle.text.trim();
+        }, 100);
+      } else if (!currentSubtitle) {
+        subtitleDisplay1.style.opacity = 0;
+        lastText = '';
+      }
     });
 
     function toSeconds(timeString) {
