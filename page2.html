@@ -97,16 +97,26 @@
       .then(data => {
         const lines = data.split('\n');
         let current = {};
-        for (let line of lines) {
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+
           if (line.includes('-->')) {
             const [start, end] = line.split('-->').map(s => s.trim());
             current = { start: toSeconds(start), end: toSeconds(end), text: '' };
           } else if (line.trim() === '') {
-            if (current.text) subtitles2.push(current);
-            current = {};
+            if (current.text) {
+              subtitles2.push(current);
+              current = {};
+            }
           } else {
             current.text += line + '\n';
           }
+        }
+
+        // Push final cue if not already pushed
+        if (current.text) {
+          subtitles2.push(current);
         }
       });
 
@@ -122,7 +132,7 @@
           subtitleDisplay2.style.opacity = 1;
           lastText = currentSubtitle.text.trim();
         }, 100);
-      } else if (!currentSubtitle) {
+      } else if (!currentSubtitle && lastText !== '') {
         subtitleDisplay2.style.opacity = 0;
         lastText = '';
       }
